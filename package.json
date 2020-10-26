@@ -1,0 +1,22 @@
+{
+  "name": "kiwii",
+  "version": "1.0.0",
+  "description": "open source e-commerce application",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vollov/kiwii.git"
+  },
+  "keywords": [
+    "e-commerce"
+  ],
+  "author": "dike.zhang@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vollov/kiwii/issues"
+  },
+  "homepage": "https://github.com/vollov/kiwii#readme"
+}
