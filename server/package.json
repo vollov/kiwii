@@ -1,0 +1,45 @@
+{
+  "name": "kiwii",
+  "version": "1.0.0",
+  "description": "open source e-commerce application",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest src"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vollov/kiwii.git"
+  },
+  "keywords": [
+    "e-commerce"
+  ],
+  "author": "dike.zhang@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vollov/kiwii/issues"
+  },
+  "homepage": "https://github.com/vollov/kiwii#readme",
+  "dependencies": {
+    "axios": "^0.21.0",
+    "bunyan": "^1.8.14",
+    "express": "^4.17.1",
+    "helmet": "^4.1.1",
+    "ioredis": "^4.19.0",
+    "lodash": "^4.17.20",
+    "mongoose": "^5.10.10",
+    "mongoose-timestamp": "^0.6.0",
+    "serve-favicon": "^2.5.0",
+    "yamljs": "^0.3.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.3",
+    "@babel/plugin-transform-destructuring": "^7.12.1",
+    "@babel/preset-env": "^7.12.1",
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-jest": "^26.6.1",
+    "babel-plugin-root-import": "^6.6.0",
+    "babel-preset-env": "^1.7.0",
+    "jest": "^26.6.1"
+  }
+}
