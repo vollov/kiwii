@@ -1,5 +1,4 @@
 import express from 'express'
-import { decodeJwt } from '~/src/auth/service'
 import log from '~/src/lib/logger'
 import {
 	setQuantity,
@@ -24,7 +23,7 @@ router.post('/cart', async (req, res) => {
 	// 	]
 	const items = req.body
 	try {
-		const user = decodeJwt(req)
+		const user = req.user
 		const data = await addItems(user.id, items)
 		return res.status(200).json(data)
 	} catch (err) {
@@ -40,7 +39,7 @@ router.post('/cart', async (req, res) => {
 router.put('/cart/:sku', async (req, res) => {
 	const sku = req.params.sku
 	const quantity = req.body.quantity
-	const user = decodeJwt(req)
+	const user = req.user
 
 	try {
 		const cart = await setQuantity(user.id, sku, quantity)
@@ -56,7 +55,7 @@ router.put('/cart/:sku', async (req, res) => {
  */
 router.post('/cart/delete', async (req, res) => {
 	const skus = req.body
-	const user = decodeJwt(req)
+	const user = req.user
 	try {
 		const cart = await removeItems(user.id, skus)
 		return res.status(200).json(cart)
@@ -70,7 +69,7 @@ router.post('/cart/delete', async (req, res) => {
  * get current user's shopping cart
  */
 router.get('/cart', async (req, res) => {
-	const user = decodeJwt(req)
+	const user = req.user
 	const token = req.get('Authorization')
 	try {
 		const data = await getCart(user.id, token)

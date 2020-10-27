@@ -25,8 +25,8 @@ import { ServerError, AuthError } from '~/src/lib/errors'
  */
 const login = async (u) => {
 
+	// save user if it is not in database
 	try {
-		// return null if no match
 		var savedUser = await User.findOne({ email: u.email })
 
 		if (!savedUser) {
@@ -37,7 +37,10 @@ const login = async (u) => {
 		throw new Error(DATABASE_ERROR)
 	}
 
-	// reset user session in redis. key=f(email), value=token
+	// TODO: if user already in redis, return token
+
+
+	// save token if user not in redis. key=f(email), value=token
 	let user = _.assign(u, { id: savedUser.id })
 
 	try {
@@ -45,6 +48,8 @@ const login = async (u) => {
 			expiresIn: cfg.jwt.expire,
 		})
 		const key = `${cfg.app.name}:auth:${user.email}`
+
+		// TODO: set redis to delete expired token
 		await redis.set(key, token)
 		return { user: user, token: token }
 	} catch (err) {

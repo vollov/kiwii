@@ -1,5 +1,5 @@
 import express from 'express'
-import { decodeJwt } from '~/src/lib/utils'
+
 import {
 	pay,
 	stripePubKey,
@@ -18,7 +18,7 @@ const router = express.Router()
 router.get('/addresses/:type', async (req, res) => {
 	const type = req.params.type
 	try {
-		const user = decodeJwt(req)
+		const user = req.user
 		const data = await getAddress(user.id, type)
 		return res.status(200).json(data)
 	} catch (err) {
@@ -32,7 +32,7 @@ router.get('/addresses/:type', async (req, res) => {
 router.post('/addresses', async (req, res) => {
 	const address = req.body
 	try {
-		const user = decodeJwt(req)
+		const user = req.user
 		const data = await saveAddress(user.id, address)
 		return res.status(200).json(data)
 	} catch (err) {
@@ -47,7 +47,7 @@ router.put('/addresses/:id', async (req, res) => {
 	const id = req.params.id
 	const address = req.body
 	try {
-		const user = decodeJwt(req)
+		const user = req.user
 		const data = await updateAddress(user.id, id, address)
 		return res.status(200).json(data)
 	} catch (err) {

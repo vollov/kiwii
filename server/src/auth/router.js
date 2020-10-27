@@ -1,6 +1,5 @@
 import express from 'express'
 import { googleLogin, facebookLogin, logout } from './service'
-import { authorization, response } from '~/src/lib/utils'
 import log from '~/src/lib/logger'
 const router = express.Router()
 
@@ -33,7 +32,7 @@ router.get('/facebook/login/:code', async(req, res) => {
 	}
 })
 
-router.get('/logout/:id', authorization, async (req, res) => {
+router.get('/logout/:id', async (req, res) => {
 	const id = req.params.id
 	const user = req.user
 

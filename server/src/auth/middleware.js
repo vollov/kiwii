@@ -4,8 +4,8 @@ import { AuthError } from '~/src/lib/errors'
 import {
 	JWT_TOKEN_REQUIRED,
 	UNAUTHORIZED,
-	SERVER_ERROR
-} from '~/src/lib/constants'
+	SERVER_ERROR // 500
+} from '~/src/lib/codes'
 
 import {verifyToken} from '~/src/auth/service'
 
@@ -49,6 +49,8 @@ const authorization = async (req, res, next) => {
 				return res.status(error.statusCode).send(error);
 			} 
 
+			// 1) validate token, if expired, send error ask client to logout user 
+			// 2) fetch token and compare it with token saved in redis.
 			const tokenArray = token.split(" ");
 			const jwt = tokenArray[1];
 
@@ -68,12 +70,6 @@ const authorization = async (req, res, next) => {
 	}
 	
 	next()
-
-
-
-
-
-
 
 };
 
