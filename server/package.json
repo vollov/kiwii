@@ -4,6 +4,10 @@
   "description": "open source e-commerce application",
   "main": "index.js",
   "scripts": {
+    "copy": "rm -fr dist/swagger && cp -r src/swagger dist/ && cp -r src/public dist/",
+    "build": "babel src --source-maps --out-dir dist",
+    "start": "npm run build && npm run copy && node dist/index.js",
+    "dev": "nodemon --exec babel-node src/index.js",
     "test": "jest src"
   },
   "repository": {
@@ -21,25 +25,33 @@
   "homepage": "https://github.com/vollov/kiwii#readme",
   "dependencies": {
     "axios": "^0.21.0",
+    "body-parser": "^1.19.0",
     "bunyan": "^1.8.14",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "helmet": "^4.1.1",
     "ioredis": "^4.19.0",
+    "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.20",
     "mongoose": "^5.10.10",
     "mongoose-timestamp": "^0.6.0",
     "serve-favicon": "^2.5.0",
+    "stripe": "^8.118.0",
+    "swagger-jsdoc": "^4.3.1",
+    "swagger-ui-express": "^4.1.4",
     "yamljs": "^0.3.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.3",
-    "@babel/plugin-transform-destructuring": "^7.12.1",
-    "@babel/preset-env": "^7.12.1",
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.3",
-    "babel-jest": "^26.6.1",
-    "babel-plugin-root-import": "^6.6.0",
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.9.0",
+    "@babel/node": "^7.8.4",
+    "@babel/plugin-transform-destructuring": "^7.9.5",
+    "@babel/preset-env": "^7.9.0",
+    "babel-eslint": "^10.0.3",
+    "babel-jest": "^25.4.0",
+    "babel-loader": "^8.0.6",
+    "babel-plugin-root-import": "^6.5.0",
     "babel-preset-env": "^1.7.0",
-    "jest": "^26.6.1"
+    "jest": "^25.4.0"
   }
 }

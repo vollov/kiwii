@@ -10,18 +10,11 @@ import {
 	DATABASE_ERROR,
 	CACHE_ERROR,
 	UNAUTHORIZED, // 401
-	SERVER_ERROR  // 500
-} from '~/src/lib/codes'
-
-import {
-	ServerError, AuthError
-} from '~/src/lib/errors'
-
-import {
+	SERVER_ERROR,  // 500
 	FB_QUERY_ACCESS_TOKEN_FAILED,
 	FB_QUERY_USER_ID_FAILED,
 	FB_QUERY_EMAIL_FAILED
-} from './errors'
+} from '~/src/lib/codes'
 
 import { ServerError, AuthError } from '~/src/lib/errors'
 
@@ -229,4 +222,27 @@ const logout = async (user, id) => {
 	}
 }
 
-export { logout, login, isAuthenticated, verifyToken, googleLogin, facebookLogin }
+/**
+ * parse http header to get user object
+ * return User {id, firstName, lastName, email}
+ */
+const decodeJwt = (req) => {
+	try {
+		const authHeader = req.get('Authorization')
+		log.trace(`authHeader =${authHeader}`)
+		const tokenArray = authHeader.split(' ')
+		const token = tokenArray[1]
+		return jwt.verify(token, cfg.jwt.secret)
+	} catch (err) {
+		log.error(`Decode token failed, error=${err}`)
+		if (err instanceof TokenExpiredError) {
+			log.error(`Decode token error: JWT_TOKEN_EXPIRED`)
+			throw new Error(JWT_TOKEN_EXPIRED)
+		} else {
+			log.error(`Decode token error: JWT_TOKEN_INVALID`)
+			throw new Error(JWT_TOKEN_INVALID)
+		}
+	}
+}
+
+export { logout, login, isAuthenticated, decodeJwt, googleLogin, facebookLogin }

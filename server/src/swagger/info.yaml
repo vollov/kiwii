@@ -1,0 +1,26 @@
+openapi: 3.0.1
+info:
+  title: Duocun Service API
+  description: Duocuns application restful API
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  version: 1.0.0
+servers:
+  - url: http://api.localhost/api
+    description: api root
+  - url: http://api.localhost/api/auth
+    description: authentication module
+  - url: http://api.localhost/api/products
+    description: products module
+  - url: http://api.localhost/api/orders
+    description: orders module
+schemes:
+  - http
+  - https
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    name: Authorization
+    required: true
+    in: header

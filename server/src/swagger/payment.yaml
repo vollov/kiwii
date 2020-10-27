@@ -1,0 +1,89 @@
+paths:
+  /key:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - Payments
+      summary: Get Stripe payment public key
+      parameters:
+        - in: header
+          name: token
+          schema:
+            type: string
+            required: true
+          description: jwt token
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StripeKey'
+
+        500:
+          description: server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    description: DATABASE_ERROR | SERVER_ERROR
+  /charge:
+    post:
+      security:
+        - Bearer: []
+      tags:
+        - Payments
+      summary: Call Stripe Charge API to charge credit card. (https://stripe.com/docs/payments/accept-a-payment-charges)
+      parameters:
+        - in: header
+          name: token
+          schema:
+            type: string
+            required: true
+          description: jwt token
+      requestBody:
+        description: Charge object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Charge'
+        required: false
+      responses:
+        200:
+          description: refer https://stripe.com/docs/api/charges/object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Charge'
+        500:
+          description: server error, refer https://stripe.com/docs/api/errors
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    description: DATABASE_ERROR | SERVER_ERROR
+
+components:
+  schemas:
+    StripeKey:
+      type: object
+      properties:
+        publicKey:
+          type: string
+
+    Charge:
+      type: object
+      properties:
+        amount:
+          type: number
+        description:
+          type: string
+        source:
+          type: string

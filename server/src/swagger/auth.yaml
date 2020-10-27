@@ -1,0 +1,150 @@
+paths:
+  '/auth/echo/{tokenId}':
+    get:
+      tags:
+        - Authentication
+      summary: login app with token id (/current), return an account object
+
+      parameters:
+        - name: tokenId
+          in: path
+          description: token id of current user
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Echo'
+        400:
+          description: invalid auth code
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    description: INVALID_CREDENTIAL
+        500:
+          description: server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    description: DATABASE_ERROR | SERVER_ERROR
+
+  '/auth/google/login/{token}':
+    get:
+      tags:
+        - Authentication
+      summary: login with google access token
+
+      parameters:
+        - name: token
+          in: path
+          description: google access token to query google userinfo api
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+        400:
+          description: invalid token
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    description: INVALID_TOKEN
+        500:
+          description: server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    description: DATABASE_ERROR | SERVER_ERROR
+
+  '/auth/logout':
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - Authentication
+      summary: logout user
+      parameters:
+        - in: header
+          name: token
+          schema:
+            type: string
+            required: true
+          description: jwt token
+      responses:
+        200:
+          description: OK
+        401:
+          description: unauthorized access
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    description: UNAUTHORIZED_ACCESS
+        500:
+          description: server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    description: DATABASE_ERROR | SERVER_ERROR
+
+components:
+  schemas:
+    Echo:
+      type: object
+      properties:
+        token:
+          type: string
+
+    Account:
+      required:
+        - _id
+      type: object
+      properties:
+        _id:
+          type: string
+        firstName:
+          type: string
+          description: first name
+        lastName:
+          type: string
+        email:
+          type: string
+        jwtToken:
+          type: string
+
+    Accounts:
+      type: array
+      items:
+        $ref: '#/components/schemas/Account'

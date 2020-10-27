@@ -1,0 +1,331 @@
+paths:
+  /orders:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - Orders
+      summary: Get current user's orders, return a list of orders
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Orders'
+        500:
+          description: server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    description: DATABASE_ERROR | SERVER_ERROR
+
+    post:
+      security:
+        - Bearer: []
+      tags:
+        - Orders
+      summary: place an order, do credit card transaction. move item from cart to order.
+      parameters:
+        - in: header
+          name: token
+          schema:
+            type: string
+            required: true
+          description: jwt token
+        - name: sku
+          in: path
+          description: sku of product
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: list of PurchaseItem
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PurchaseItem'
+        required: false
+      responses:
+        200:
+          description: Order is placed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        401:
+          description: unauthorized access
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    description: UNAUTHORIZED_ACCESS
+        500:
+          description: server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    description: DATABASE_ERROR | SERVER_ERROR
+
+  /orders/cart:
+    post:
+      security:
+        - Bearer: []
+      tags:
+        - Orders
+      summary: add items into shopping cart, return cart. if not logged in, store cart in client cache.
+      parameters:
+        - in: header
+          name: token
+          schema:
+            type: string
+            required: true
+          description: jwt token
+        - in: path
+          name: sku
+          schema:
+            type: string
+            required: true
+          description: product sku
+      requestBody:
+        description: items
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PurchaseItems'
+        required: false
+      responses:
+        200:
+          description: Cart
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+        500:
+          description: server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    description: DATABASE_ERROR | SERVER_ERROR
+
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - Orders
+      summary: Get current user's cart
+      parameters:
+        - in: header
+          name: token
+          schema:
+            type: string
+            required: true
+          description: jwt token
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+        401:
+          description: unauthorized access
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    description: UNAUTHORIZED_ACCESS
+        500:
+          description: server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    description: DATABASE_ERROR | SERVER_ERROR
+
+  /orders/cart/{sku}:
+    put:
+      security:
+        - Bearer: []
+      tags:
+        - Orders
+      summary: update purchase item quantity, return write result. if not logged in, store cart in client cache.
+      parameters:
+        - in: header
+          name: token
+          schema:
+            type: string
+            required: true
+          description: jwt token
+        - in: path
+          name: sku
+          schema:
+            type: string
+            required: true
+          description: product sku
+      requestBody:
+        description: quantity
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/quantity'
+        required: false
+      responses:
+        200:
+          description: Cart
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+        401:
+          description: unauthorized access
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    description: UNAUTHORIZED_ACCESS
+        500:
+          description: server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    description: DATABASE_ERROR | SERVER_ERROR
+
+  /orders/cart/delete:
+    post:
+      security:
+        - Bearer: []
+      tags:
+        - Orders
+      summary: remove purchase items, return write result. if not logged in, update cart in client cache.
+      parameters:
+        - in: header
+          name: token
+          schema:
+            type: string
+            required: true
+          description: jwt token
+        - in: path
+          name: sku
+          schema:
+            type: string
+            required: true
+          description: product sku
+      requestBody:
+        description: skus
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/skus'
+        required: false
+      responses:
+        200:
+          description: Cart
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+        401:
+          description: unauthorized access
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    description: UNAUTHORIZED_ACCESS
+        500:
+          description: server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    description: DATABASE_ERROR | SERVER_ERROR
+
+components:
+  schemas:
+    skus:
+      type: array
+      items:
+        type: string
+      description: list of skus
+
+    quantity:
+      type: object
+      properties:
+        quantity:
+          type: string
+
+    PurchaseItem:
+      type: object
+      properties:
+        sku:
+          type: string
+        quantity:
+          type: number
+
+    PurchaseItems:
+      type: array
+      items:
+        $ref: '#/components/schemas/PurchaseItem'
+
+    Cart:
+      required:
+        - _id
+      type: object
+      properties:
+        _id:
+          type: string
+        user:
+          $ref: '#/components/schemas/Account'
+        purchases:
+          $ref: '#/components/schemas/PurchaseItems'
+
+    Order:
+      required:
+        - _id
+      type: object
+      properties:
+        _id:
+          type: string
+        user:
+          $ref: '#/components/schemas/Account'
+        purchases:
+          $ref: '#/components/schemas/PurchaseItems'
+
+    Orders:
+      type: array
+      items:
+        $ref: '#/components/schemas/Order'

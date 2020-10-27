@@ -1,0 +1,264 @@
+paths:
+  /products:
+    get:
+      tags:
+        - Products
+      summary: Get all products
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Products'
+
+        500:
+          description: server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    description: DATABASE_ERROR | SERVER_ERROR
+    post:
+      security:
+        - Bearer: []
+      tags:
+        - Products
+      summary: Create new product
+      parameters:
+        - in: header
+          name: token
+          schema:
+            type: string
+            required: true
+          description: jwt token
+      requestBody:
+        description: Product that we want to create
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+        required: false
+      responses:
+        200:
+          description: New product
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        500:
+          description: server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    description: DATABASE_ERROR | SERVER_ERROR
+
+  /products/image/{sku}:
+    get:
+      tags:
+        - Products
+      summary: Get product default image by sku
+      parameters:
+        - name: sku
+          in: path
+          description: sku of product
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Product image is found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductImage'
+        500:
+          description: server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    description: DATABASE_ERROR | SERVER_ERROR
+
+  /products/{sku}:
+    get:
+      tags:
+        - Products
+      summary: Get product by sku
+      parameters:
+        - name: sku
+          in: path
+          description: sku of product
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Product is found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        500:
+          description: server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    description: DATABASE_ERROR | SERVER_ERROR
+
+    put:
+      security:
+        - Bearer: []
+      tags:
+        - Products
+      summary: Update product by sku
+      parameters:
+        - in: header
+          name: token
+          schema:
+            type: string
+            required: true
+          description: jwt token
+        - name: sku
+          in: path
+          description: sku of product
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Product with new values of properties
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+        required: false
+      responses:
+        200:
+          description: Product is updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        401:
+          description: unauthorized access
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    description: UNAUTHORIZED_ACCESS
+        500:
+          description: server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    description: DATABASE_ERROR | SERVER_ERROR
+
+    delete:
+      security:
+        - Bearer: []
+      tags:
+        - Products
+      summary: Delete product by sku
+      parameters:
+        - in: header
+          name: token
+          schema:
+            type: string
+            required: true
+          description: jwt token
+        - name: sku
+          in: path
+          description: product sku
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Product is deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        401:
+          description: unauthorized access
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    description: UNAUTHORIZED_ACCESS
+        500:
+          description: server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    description: DATABASE_ERROR | SERVER_ERROR
+
+components:
+  schemas:
+    Product:
+      required:
+        - _id
+      type: object
+      properties:
+        _id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+        cost:
+          type: number
+        properties:
+          type: array
+          items:
+            type: object
+    Products:
+      type: array
+      items:
+        $ref: '#/components/schemas/Product'
+
+    ProductImage:
+      required:
+        - _id
+      type: object
+      properties:
+        _id:
+          type: string
+        name:
+          type: string
+        path:
+          type: string
+        thumbs:
+          type: string
+        sequence:
+          type: number
