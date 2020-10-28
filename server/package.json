@@ -1,5 +1,5 @@
 {
-  "name": "kiwii",
+  "name": "kiwii-server",
   "version": "1.0.0",
   "description": "open source e-commerce application",
   "main": "index.js",

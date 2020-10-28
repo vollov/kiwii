@@ -1,13 +1,11 @@
 import _ from 'lodash'
+import jwt from 'jsonwebtoken'
 
 import { AuthError } from '~/src/lib/errors'
 import {
 	JWT_TOKEN_REQUIRED,
-	UNAUTHORIZED,
-	SERVER_ERROR // 500
+	UNAUTHORIZED // 401
 } from '~/src/lib/codes'
-
-import {verifyToken} from '~/src/auth/service'
 
 const header = (req, res, next) => {
 	res.header('Access-Control-Allow-Origin', '*')
@@ -24,10 +22,8 @@ const header = (req, res, next) => {
 	next()
 }
 
-// const regex = /[A-Z]/g;
 const whitelist = [
 	/\/api\/auth\/google\/login\/*/g,
-	RegExp('/api/product/*'),
 	/\/api\/products\/*/g
 ]
 // '/api/auth/google/login/*', '/api/auth/facebook/login/*', '/api/products/*'
@@ -35,42 +31,40 @@ const authorization = async (req, res, next) => {
 	
 	const path = req.path
 
+	// public APIs do not require jwt token
 	if(req.method == 'GET'){
 		if(_.some(whitelist, (x) => x.test(path))){
-			console.log(`authorization, pulbic path=${path}, method=${req.method}`)
-		} else {
-			// check HTTP header 
-			
-			const token = req.get("Authorization")
-
-			// return error if no token
-			if (!token) {
-				const error = new AuthError(JWT_TOKEN_REQUIRED, UNAUTHORIZED);
-				return res.status(error.statusCode).send(error);
-			} 
-
-			// 1) validate token, if expired, send error ask client to logout user 
-			// 2) fetch token and compare it with token saved in redis.
-			const tokenArray = token.split(" ");
-			const jwt = tokenArray[1];
-
-			// verify token
-			console.log(`authorization, path=${path}, jwt=${jwt}`)
+			log.debug(`authorization, pulbic path=${path}, method=${req.method}`)
 			next()
-			// try {
-			// 	const email = await verifyToken(jwt);
-			// 	req.email = email;
-			// 	next();
-			// } catch (err) {
-			// 	log.error(`Validate JWT token error= ${err}`)
-			// 	const error = new ServerError(JWT_TOKEN_INVALID, SERVER_ERROR)
-			// 	return res.status(error.statusCode).send(error);
-			// }
 		}
 	}
 	
-	next()
+	// APIs require jwt token
+	// check HTTP header 
+	const token = req.get("Authorization")
 
+	// return error if no token
+	if (!token) {
+		const error = new AuthError(JWT_TOKEN_REQUIRED, UNAUTHORIZED);
+		return res.status(UNAUTHORIZED).send(error);
+	} 
+
+	// 1) validate token, if expired, send error ask client to logout user 
+	// 2) fetch token and compare it with token saved in redis.
+	const tokenArray = token.split(" ");
+	const jwt_token = tokenArray[1];
+
+	log.debug(`authorization APIs, path=${path}, method=${req.method}, jwt_token=${jwt_token}`)
+	try {
+		const user = await jwt.verify(jwt_token, cfg.jwt.secret)
+		req.user = user
+		next()
+	} catch (err) {
+		// expired and invalid token
+		log.error(`authorization token validation err=${err}`)
+		const error = new AuthError(JWT_TOKEN_INVALID, UNAUTHORIZED);
+		return res.status(UNAUTHORIZED).send(error);
+	}
 };
 
 export { header, authorization }

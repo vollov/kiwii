@@ -231,23 +231,23 @@ const logout = async (user, id) => {
  * parse http header to get user object
  * return User {id, firstName, lastName, email}
  */
-const decodeJwt = (req) => {
-	try {
-		const authHeader = req.get('Authorization')
-		log.trace(`authHeader =${authHeader}`)
-		const tokenArray = authHeader.split(' ')
-		const token = tokenArray[1]
-		return jwt.verify(token, cfg.jwt.secret)
-	} catch (err) {
-		log.error(`Decode token failed, error=${err}`)
-		if (err instanceof TokenExpiredError) {
-			log.error(`Decode token error: JWT_TOKEN_EXPIRED`)
-			throw new Error(JWT_TOKEN_EXPIRED)
-		} else {
-			log.error(`Decode token error: JWT_TOKEN_INVALID`)
-			throw new Error(JWT_TOKEN_INVALID)
-		}
-	}
-}
+// const decodeJwt = (req) => {
+// 	try {
+// 		const authHeader = req.get('Authorization')
+// 		log.trace(`authHeader =${authHeader}`)
+// 		const tokenArray = authHeader.split(' ')
+// 		const token = tokenArray[1]
+// 		return jwt.verify(token, cfg.jwt.secret)
+// 	} catch (err) {
+// 		log.error(`Decode token failed, error=${err}`)
+// 		if (err instanceof TokenExpiredError) {
+// 			log.error(`Decode token error: JWT_TOKEN_EXPIRED`)
+// 			throw new Error(JWT_TOKEN_EXPIRED)
+// 		} else {
+// 			log.error(`Decode token error: JWT_TOKEN_INVALID`)
+// 			throw new Error(JWT_TOKEN_INVALID)
+// 		}
+// 	}
+// }
 
-export { logout, login, isAuthenticated, decodeJwt, googleLogin, facebookLogin }
+export { logout, login, isAuthenticated, googleLogin, facebookLogin }

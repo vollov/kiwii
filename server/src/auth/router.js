@@ -1,5 +1,5 @@
 import express from 'express'
-import { googleLogin, facebookLogin, logout } from './service'
+import { googleLogin, facebookLogin, login, logout } from './service'
 import log from '~/src/lib/logger'
 const router = express.Router()
 
