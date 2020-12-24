@@ -28,3 +28,4 @@ export const UNAUTHORIZED_REQUEST = 'UNAUTHORIZED_REQUEST'
  */
 export const DATABASE_ERROR = 'DATABASE_ERROR'
 export const CACHE_ERROR = 'CACHE_ERROR'
+export const INTERNAL_ERROR = 'INTERNAL_ERROR' // rest query error

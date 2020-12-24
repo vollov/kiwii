@@ -1,5 +1,5 @@
 import { model, Schema } from 'mongoose'
-import cfg from '~/src/config'
+import cfg from '../config'
 
 const BrandSchema = new Schema({
 	name: String,

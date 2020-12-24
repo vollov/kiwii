@@ -1,5 +1,5 @@
 import Redis from 'ioredis'
-import cfg from '~/src/config'
+import cfg from '../config'
 
 const redis = new Redis({ password: cfg.redis.secret })
 

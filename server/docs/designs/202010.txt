@@ -1,0 +1,9 @@
+## 20201028
+spent 3 hours redo the bable config, to be able to support bable 7 with following features:
+- support jest
+- support debug es6 on vscode
+- support es2017 with spread operator
+
+## 20201223
+https://www.codementor.io/@oparaprosper79/understanding-node-error-err_http_headers_sent-117mpk82z8
+

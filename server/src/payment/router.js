@@ -9,7 +9,7 @@ import {
 	intentSecret,
 } from './service'
 
-import log from '~/src/lib/logger'
+import log from '../lib/logger'
 const router = express.Router()
 
 /**

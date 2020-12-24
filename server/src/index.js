@@ -18,13 +18,13 @@ const options = {
 const swaggerSpec = swaggerJsDoc(options)
 
 // app routes
-import cfg from '~/src/config'
-import log from '~/src/lib/logger'
-import { header, authorization } from '~/src/auth/middleware'
-import auth from '~/src/auth/router'
-import product from '~/src/product/router'
-import order from '~/src/order/router'
-import payment from '~/src/payment/router'
+import cfg from './config'
+import log from './lib/logger'
+import { header, authorization } from './auth/middleware'
+import auth from './auth/router'
+import product from './product/router'
+import order from './order/router'
+import payment from './payment/router'
 
 const app = express()
 
@@ -38,7 +38,7 @@ mongoose.connect(cfg.db.url, {
 	useCreateIndex: true,
 })
 mongoose.connection.once('open', () =>
-	console.log(`Connected to mongo at ${cfg.db.url}`)
+	log.info(`Connected to mongo at ${cfg.db.url}`)
 )
 
 app.use(helmet())
@@ -51,16 +51,15 @@ app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
 
 app.use('/static', express.static(path.join(cfg.media.image.root)))
 
-const authMiddleware = [header, authorization]
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
-
-app.all('*', authMiddleware)
+const authMiddleware = [header, authorization]
+app.use('*', authMiddleware)
 app.use(cfg.app.api + 'auth', auth)
 app.use(cfg.app.api + 'products', product)
 app.use(cfg.app.api + 'orders', order)
 app.use(cfg.app.api + 'payments', payment)
 app.listen(cfg.app.PORT, () =>
-	log.info(`Listening on port ${cfg.app.PORT}`)
+	log.info(`Server started on port ${cfg.app.PORT}`)
 )
 
 module.exports = app

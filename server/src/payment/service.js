@@ -1,6 +1,6 @@
-import cfg from '~/src/config'
-import log from '~/src/lib/logger'
-import { Address } from '~/src/models/payment'
+import cfg from '../config'
+import log from '../lib/logger'
+import { Address } from '../models/payment'
 import client from 'stripe'
 // Set your secret key. Remember to switch to your live secret key in production!
 // See your keys here: https://dashboard.stripe.com/account/apikeys

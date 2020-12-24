@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
-import User from '~/src/models/user'
-import log from '~/src/lib/logger'
-import { setQuantity, removeItems, addItems } from '~/src/order/service'
+import User from '../models/user'
+import log from '../lib/logger'
+import { setQuantity, removeItems, addItems } from '../order/service'
 /**
  * https://zellwk.com/blog/jest-and-mongoose/
  */

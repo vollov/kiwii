@@ -3,7 +3,7 @@ import _ from "lodash";
 import {
 	UNAUTHORIZED_REQUEST,
 	DATABASE_ERROR
-} from '~/src/lib/codes'
+} from '../lib/codes'
 
 const f1 = (n) => {
 

@@ -1,4 +1,4 @@
-import React, { useEffect, Fragment } from 'react'
+import React, { useEffect, useState, Fragment } from 'react'
 import queryString from 'query-string'
 import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
@@ -7,18 +7,24 @@ import log from 'libs/log'
 
 import { googleLogin, authState } from 'stores/actions/auth'
 
+// import Loader from 'react-loader-spinner'
+// import { useScrollTrigger } from '@material-ui/core'
+
 /**
  * send access_token to REST_HOST/google/login,
  * store user in local and redirect to /home
+ * TODO: add a loding state
  */
 const GoogleCallback = (props) => {
 	const { googleLogin, status, location } = props
 	const values = queryString.parse(location.hash)
 	const from = JSON.parse(values.state)
-	log.trace(`[GoogleCallback], path from=${values.state}`)
+	log.debug(`[GoogleCallback], path from=${values.state}`)
+
+	const [loading, setLoading] = useState(true)
 
 	useEffect(() => {
-		// request facebbok/login/:access_token 
+		// request facebbok/login/:access_token
 		// write jwt token and user into redux
 		googleLogin(values.access_token)
 	})
@@ -26,7 +32,6 @@ const GoogleCallback = (props) => {
 	if (status === authState.LOGIN) {
 		return <Redirect to={from} />
 	} else {
-		
 		return (
 			<Fragment>
 				<div>Google Callback Error :(</div>

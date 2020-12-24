@@ -1,4 +1,4 @@
-import { Brand } from '~/src/models/product'
+import { Brand } from '../../models/product'
 
 const list = () => {
 	// use exec to return a promise

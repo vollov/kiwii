@@ -1,5 +1,5 @@
 import { model, Schema } from 'mongoose'
-import { verifyPostcode } from '~/src/lib/validators'
+import { verifyPostcode } from '../lib/validators'
 
 const AddressSchema = new Schema({
 	user: { type: Schema.Types.ObjectId, ref: 'User' },

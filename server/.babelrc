@@ -1,17 +1,13 @@
 {
-	"presets": [
-		[
-			"env",
-			{
-				"targets": {
-					"node": "current"
-				}
-			}
-		]
-	],
-	"plugins": [
-		"@babel/plugin-transform-destructuring",
-		"babel-plugin-root-import"
-	]
+  "presets": [
+    "@babel/preset-env"
+  ],
+  "env": {
+    "debug": {
+      "sourceMap": "inline",
+      "retainLines": true
+    }
+  }
 }
+
 

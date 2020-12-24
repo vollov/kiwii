@@ -9,7 +9,7 @@ export const LOGIN_ERROR = 'LOGIN_ERROR'
 export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS'
 export const LOGOUT_ERROR = 'LOGOUT_ERROR'
 
-//export const 
+//export const
 
 export const authState = {
 	LOGIN: 'LOGIN',
@@ -17,31 +17,28 @@ export const authState = {
 }
 
 /**
+ * logout
+ * - call logout url with jwt token
+ * - clear local cart
+ * - clear payment key
+ * - clear local jwt token
  * private api: unregister user in redis
  */
 export const logout = () => {
-	return async (dispatch, getState) => {
+	return async (dispatch) => {
 		try {
-			const token = getState().auth.jwtToken
-			const { id } = getState().auth.user
-			//log.debug(`token=${token}`);
-			const config = { headers: { Authorization: 'Bearer ' + token } }
-			const data = await axios.get(`/auth/logout/${id}`, config)
-
-			// if status code = 401, remove jwt from local storage
-			// if status code = 500, dispatch LOGOUT_ERROR, remove jwt from local storage
-			// do normal business process
-
-			// if status code is 401 and JwtError(JWT_TOKEN_EXPIRED | JWT_TOKEN_INVALID), delete jwt token from local store
+			await axios.get(`/auth/logout`)
 
 			dispatch({ type: LOGOUT_SUCCESS })
-			// clear shopping cart
+			// clear redux.cart
 			dispatch(clearCart())
-			// clear payment pubkey
+			// clear redux.payment_pubkey
 			dispatch(clearPubkey())
 		} catch (err) {
 			// request server api failure
-			log.error(`[logout] request server api failure, err=${JSON.stringify(err)}`)
+			log.error(
+				`[logout] request server api failure, err=${JSON.stringify(err)}`
+			)
 			dispatch({ type: LOGOUT_ERROR, err })
 		}
 	}
@@ -57,10 +54,9 @@ export const googleLogin = (token) => {
 			// HTTP POST to register user with access_token
 			const res = await axios.get(`/auth/google/login/${token}`)
 			// TODO: save jwt token in local storage
-			log.trace(`auth actions, googleLogin return res=${JSON.stringify(res)}`)
+			log.debug(`auth actions, googleLogin return res=${JSON.stringify(res)}`)
 			// save user data in redux
-			// data = { user: user, token: token }
-			// user = { firstName, lastName, email}
+			// data = { user: { firstName, lastName, email }, token: token }
 			dispatch({ type: LOGIN_SUCCESS, data: res.data })
 			// sync the cart with server (upload cart + download cart)
 			dispatch(snycCart())
@@ -75,17 +71,17 @@ export const googleLogin = (token) => {
 
 /**
  * handle facebook code
- * @param {string} token 
+ * @param {string} token
  */
 export const facebookLogin = (code) => {
-
 	return async (dispatch) => {
-		try{
+		try {
 			const res = await axios.get(`/auth/facebook/login/${code}`)
-			log.trace(`auth actions, facebook login return res=${JSON.stringify(res)}`)
-		} catch(err){
+			log.trace(
+				`auth actions, facebook login return res=${JSON.stringify(res)}`
+			)
+		} catch (err) {
 			log.error(`request facebook/login/${code} error, err=${err}`)
 		}
 	}
-
 }

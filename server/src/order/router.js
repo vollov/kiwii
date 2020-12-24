@@ -1,11 +1,6 @@
 import express from 'express'
-import log from '~/src/lib/logger'
-import {
-	setQuantity,
-	removeItems,
-	addItems,
-	getCart,
-} from '~/src/order/service'
+import log from '../lib/logger'
+import { setQuantity, removeItems, addItems, getCart } from '../order/service'
 
 const router = express.Router()
 
@@ -21,7 +16,9 @@ router.post('/cart', async (req, res) => {
 	// items = [
 	// 		{ sku: product.sku, quantity: values.amount },
 	// 	]
+	log.error(`add item to cart, req.body=${JSON.stringify(req.body)}`)
 	const items = req.body
+
 	try {
 		const user = req.user
 		const data = await addItems(user.id, items)
@@ -70,9 +67,9 @@ router.post('/cart/delete', async (req, res) => {
  */
 router.get('/cart', async (req, res) => {
 	const user = req.user
-	const token = req.get('Authorization')
+
 	try {
-		const data = await getCart(user.id, token)
+		const data = await getCart(user.id)
 		return res.status(200).json(data)
 	} catch (err) {
 		return res.status(500).json(err)

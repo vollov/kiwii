@@ -1,4 +1,4 @@
-import { ProductImage } from '~/src/models/product'
+import { ProductImage } from '../../models/product'
 
 const listImages = (sku) => {
 	// use exec to return a promise

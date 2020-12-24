@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { Product } from '~/src/models/product'
+import { Product } from '../../models/product'
 
 /**
  * list products

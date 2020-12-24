@@ -1,7 +1,10 @@
 import _ from 'lodash'
-import axios from 'axios'
-import { Cart } from '~/src/models/order'
-import log from '~/src/lib/logger'
+import { Cart } from '../models/order'
+import log from '../lib/logger'
+
+import axios from '../lib/client'
+
+import { INTERNAL_ERROR } from '../lib/codes'
 
 ///////////////////////////////////////////////////////////////////
 //
@@ -113,31 +116,35 @@ const removeItems = async (uid, skus) => {
 /**
  * get current user's shopping cart by user id
  */
-const getCart = async (uid, token) => {
+const getCart = async (uid) => {
 	let cart = await Cart.findOne({ user: uid }).exec()
-	log.trace(`[order] rest service, getCart cart=${JSON.stringify(cart)}`)
+	log.debug(`[order] service, getCart() cart=${JSON.stringify(cart)}`)
 	if (cart == null) {
 		// return empty cart if not found
 		return {}
 	}
 
 	let r = {}
-	const config = {
-		headers: { Authorization: token, 'Access-Control-Allow-Origin': '*' },
-	}
 	// dbCart={user, purchases={sku:quantity} => reduxCart[sku]={product, quantity}
 	for (const key in cart.purchases) {
 		// query product service via rest
-		log.trace(`[order] rest service, getCart query product sku=${key}`)
-		const res = await axios.get(`/products/${key}`, config)
-		log.trace(
-			`[order] rest service, getCart return product=${JSON.stringify(res.data)}`
-		)
-		r[key] = { product: res.data, quantity: cart.purchases[key] }
-		log.trace(`[order] rest service, getCart r=${JSON.stringify(r)}`)
+		log.debug(`[order] service, getCart() query product sku=${key}`)
+
+		// TODO: handle rest request and exceptions
+		try {
+			let res = await axios.get(`/products/${sku}`)
+			r[key] = { product: res.data, quantity: cart.purchases[key] }
+		} catch (err) {
+			log.error(
+				`[order] service, query product(sku=${sku}) error=${JSON.stringify(
+					err
+				)}`
+			)
+			throw new Error(INTERNAL_ERROR)
+		}
 	}
 
-	log.trace(`[order] rest service, getCart return r=${JSON.stringify(r)}`)
+	log.debug(`[order] service, getCart() return r=${JSON.stringify(r)}`)
 	return r
 }
 

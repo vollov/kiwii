@@ -1,5 +1,5 @@
 import express from 'express'
-import log from '~/src/lib/logger'
+import log from '../lib/logger'
 
 const router = express.Router()
 
@@ -16,7 +16,7 @@ import { listImages, addImage, findImage, updateImage, removeImage, batchAddImag
 
 // import {DATABASE_ERROR,
 // 	SERVER_ERROR // 500
-// } from '~/src/lib/codes'
+// } from '../lib/codes'
 
 //==================================
 // Public APIs
