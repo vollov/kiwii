@@ -6,6 +6,7 @@ import {
 	getAddress,
 	saveAddress,
 	updateAddress,
+	deleteAddresses,
 	intentSecret,
 } from './service'
 
@@ -49,6 +50,16 @@ router.put('/addresses/:id', async (req, res) => {
 	try {
 		const user = req.user
 		const data = await updateAddress(user.id, id, address)
+		return res.status(200).json(data)
+	} catch (err) {
+		return res.status(500).json(err)
+	}
+})
+
+router.delete('/addresses/:id', async (req, res) => {
+	const id = req.params.id
+	try {
+		const data = await deleteAddresses(id)
 		return res.status(200).json(data)
 	} catch (err) {
 		return res.status(500).json(err)

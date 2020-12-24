@@ -2,6 +2,9 @@ import cfg from '../config'
 import log from '../lib/logger'
 import { Address } from '../models/payment'
 import client from 'stripe'
+
+import { INVALID_REQUEST } from '../lib/codes'
+
 // Set your secret key. Remember to switch to your live secret key in production!
 // See your keys here: https://dashboard.stripe.com/account/apikeys
 const stripe = client(cfg.stripe.key.secret)
@@ -28,20 +31,40 @@ const stripePubKey = () => {
 	}
 }
 
-const findAddresses = async (uid) => {
+const findAddresses = async (uid, type) => {
 	return await Address.findOne({ user: uid }).exec()
 }
 
+/**
+ * Delete address by id
+ */
+const deleteAddresses = (id) => {
+	return Address.deleteOne({ _id: id }).exec()
+}
+
+/**
+ * get address by type (selling, billing, default)
+ * @param {string} uid
+ * @param {string} type S,B,D
+ */
 const getAddress = async (uid, type) => {
-	const r = await Address.findOne({
-		user: uid,
-		type: type,
-		default: true,
-	}).exec()
-	log.trace(
-		`[Payment.Service] getAddress() type = ${type}, r=${JSON.stringify(r)}`
-	)
-	return r
+	if (!type) {
+		throw new Error(INVALID_REQUEST)
+	}
+
+	log.trace(`[Payment.Service] getAddress() type = ${type}, user id =${uid}`)
+
+	if (type.toUpperCase() == 'D') {
+		return await Address.findOne({
+			user: uid,
+			default: true,
+		}).exec()
+	} else {
+		return await Address.findOne({
+			user: uid,
+			type: type.toUpperCase(),
+		}).exec()
+	}
 }
 
 const saveAddress = async (uid, address) => {
@@ -73,5 +96,6 @@ export {
 	getAddress,
 	saveAddress,
 	updateAddress,
+	deleteAddresses,
 	intentSecret,
 }

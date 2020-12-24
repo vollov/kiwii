@@ -1,0 +1,98 @@
+{
+  "BAT0001": {
+    "product": {
+      "images": [
+        {
+          "_id": "5e2b5a148c898bbcee9d1132",
+          "sku": "BAT0001",
+          "name": "BAT0001-1",
+          "sequence": 1,
+          "path": "/products/BAT0001/BAT0001-1-350.jpg",
+          "thumbs": "/products/BAT0001/thumbs/BAT0001-1-60.jpg",
+          "id": "5e2b5a148c898bbcee9d1132"
+        },
+        {
+          "_id": "5e2b5a148c898bbcee9d1133",
+          "sku": "BAT0001",
+          "name": "BAT0001-2",
+          "sequence": 2,
+          "path": "/products/BAT0001/BAT0001-2-350.jpg",
+          "thumbs": "/products/BAT0001/thumbs/BAT0001-2-60.jpg",
+          "id": "5e2b5a148c898bbcee9d1133"
+        },
+        {
+          "_id": "5e2b5a148c898bbcee9d1134",
+          "sku": "BAT0001",
+          "name": "BAT0001-3",
+          "sequence": 3,
+          "path": "/products/BAT0001/BAT0001-3-350.jpg",
+          "thumbs": "/products/BAT0001/thumbs/BAT0001-3-60.jpg",
+          "id": "5e2b5a148c898bbcee9d1134"
+        },
+        {
+          "_id": "5e2b5a148c898bbcee9d1135",
+          "sku": "BAT0001",
+          "name": "BAT0001-4",
+          "sequence": 4,
+          "path": "/products/BAT0001/BAT0001-4-350.jpg",
+          "thumbs": "/products/BAT0001/thumbs/BAT0001-4-60.jpg",
+          "id": "5e2b5a148c898bbcee9d1135"
+        },
+        {
+          "_id": "5e2b5a148c898bbcee9d1136",
+          "sku": "BAT0001",
+          "name": "BAT0001-5",
+          "sequence": 5,
+          "path": "/products/BAT0001/BAT0001-5-350.jpg",
+          "thumbs": "/products/BAT0001/thumbs/BAT0001-5-60.jpg",
+          "id": "5e2b5a148c898bbcee9d1136"
+        }
+      ],
+      "_id": "5ded0cf397b4bc4dee2ea4f8",
+      "sku": "BAT0001",
+      "brand": {
+        "_id": "5ded0cf397b4bc4dee2ea4f2",
+        "name": "goldbat",
+        "image": "/images/goldbat-logo.jpg",
+        "__v": 0
+      },
+      "name": "GOLDBAT Universal 3000mAh 11.1V 3S 30C 3Cell LiPo Battery Pack with Deans and XT60 Plug for RC Helicopter Airplane Truck Car Boat Model",
+      "description": "GOLDBAT is battery corporations with deep research and manufacturing on LiPo batteries by the effort of technicians with more than 20 years exquisite battery technology. \n\n With safe and steady formula of raw material, smooth and steady discharge curve and rigorous scientific quality control system, GOLDBAT LiPo Batteries provide the punch and on-demand power for reaching the top speed, acceleration and power your rc hobbies. ",
+      "price": 30.99,
+      "cost": 35,
+      "hits": 120,
+      "properties": {
+        "capacity": 3000,
+        "discharge": 30,
+        "weight": 248
+      },
+      "__v": 0,
+      "features": {
+        "1": "Superior Japan and Korea Lithium Polymer raw materials",
+        "2": "Automatic stacking technology, better performance",
+        "3": "Strict matching progress, excellent consistency",
+        "4": "Up to 200Wh/kg energy density and Long cycle life"
+      },
+      "package": {
+        "1": "1 x GOLDBAT 11.1v 3000mAh 30C RC Lipo battery (Deans Plug)",
+        "2": "1 x Battery Strap",
+        "3": "1 x User Manual"
+      },
+      "specification": {
+        "Battery Chemistry": "Lithium polymer",
+        "Configuration": "3S1P",
+        "Voltage(V)": "11.1V",
+        "Capacity(mAh)": "3000mAh",
+        "Discharge(C)": "30C",
+        "Net Weight": "248g/8.7oz",
+        "Dimension": "136 x 42 x 20 mm(0 - 5mm difference)",
+        "Connector Type": "Deans Plug",
+        "Balancer Connector Type": "JST-XHR"
+      },
+      "image": "BAT0001-255.jpg",
+      "imageUrl": "/products/BAT0001/list/BAT0001-250.jpg",
+      "id": "5ded0cf397b4bc4dee2ea4f8"
+    },
+    "quantity": 7
+  }
+}

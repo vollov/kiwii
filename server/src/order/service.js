@@ -3,7 +3,6 @@ import { Cart } from '../models/order'
 import log from '../lib/logger'
 
 import axios from '../lib/client'
-
 import { INTERNAL_ERROR } from '../lib/codes'
 
 ///////////////////////////////////////////////////////////////////
@@ -132,9 +131,10 @@ const getCart = async (uid) => {
 
 		// TODO: handle rest request and exceptions
 		try {
-			let res = await axios.get(`/products/${sku}`)
+			let res = await axios.get(`/products/${key}`)
 			r[key] = { product: res.data, quantity: cart.purchases[key] }
 		} catch (err) {
+			console.log(`error=${err}`)
 			log.error(
 				`[order] service, query product(sku=${sku}) error=${JSON.stringify(
 					err
